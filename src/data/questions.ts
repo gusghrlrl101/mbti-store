@@ -83,8 +83,8 @@ export const questions = [
     id: 9,
     question: "여행 중 예상치 못한 상황에 직면한다면 어떻게 반응하나요?",
     options: [
+      { text: "전에 겪었던 비슷한 상황을 떠올리며 해결한다.", type: "S" },
       { text: "주변 사람들과 이야기하며 해결책을 찾는다.", type: "E" },
-      { text: "혼자 문제를 분석하고 해결하려 한다.", type: "I" },
       { text: "논리적으로 가능한 해결책을 찾는다.", type: "T" },
       { text: "다른 사람의 감정과 의견을 먼저 고려한다.", type: "F" },
     ],
@@ -93,7 +93,7 @@ export const questions = [
     id: 10,
     question: "여행지에서 남는 시간을 어떻게 활용하고 싶나요?",
     options: [
-      { text: "현지의 유명한 명소를 차근차근 둘러본다.", type: "S" },
+      { text: "혼자 조용히 쉰다.", type: "I" },
       { text: "지금까지 가보지 않은 독특한 장소를 찾아간다.", type: "N" },
       { text: "세부 계획을 세우고 효율적으로 시간을 쓴다.", type: "J" },
       { text: "즉흥적으로 발길 닿는 대로 돌아다닌다.", type: "P" },

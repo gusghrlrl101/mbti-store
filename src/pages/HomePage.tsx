@@ -6,7 +6,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>MBTI 여행 성향 테스트</h1>
+      <h1>나에게 맞는 여행지 테스트</h1>
       <button onClick={() => navigate("/test")}>테스트 시작하기</button>
     </div>
   );
