@@ -32,9 +32,9 @@ const ResultPage: React.FC = () => {
 
   const handleShare = async () => {
     const shareData = {
-      title: "MBTI 여행 추천",
-      text: `내 MBTI는 ${result}! 추천 여행지는 ${country}입니다. 이유: ${reason}`,
-      url: window.location.href,
+      title: "나에게 맞는 여행지",
+      text: `나에게 맞는 여행지는 ${country}입니다.\n이유: ${reason}`,
+      url: "https://mbti.store",
     };
 
     if (navigator.share) {
