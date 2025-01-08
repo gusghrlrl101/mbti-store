@@ -31,7 +31,9 @@ const TestPage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
-      <h2>{currentQuestion.question}</h2>
+      <h2>
+        {currentQuestionIndex + 1}. {currentQuestion.question}
+      </h2>
       <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         {randomOptions.map((option, index) => (
           <button key={index} onClick={() => handleAnswer(option.type)}>
