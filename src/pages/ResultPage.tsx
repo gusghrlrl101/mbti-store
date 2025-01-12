@@ -1,47 +1,49 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { mbtiCountries } from "../data/countries";
+import { getCountries } from "../data/countries";
 import { Button, Space, Spin } from "antd";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 
 const ResultPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { country: countryParam } = useParams<{ country: string }>();
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // 해당 국가 정보 가져오기
-  const countryData = Object.values(mbtiCountries).find(
+  const countries = getCountries(i18n.language);
+  const countryData = Object.values(countries).find(
     (data) => data.id.toLowerCase() === countryParam?.toLowerCase()
   );
 
   if (!countryData) {
     return (
       <div style={{ textAlign: "center", padding: "20px" }}>
-        <h1>잘못된 결과 페이지입니다.</h1>
-        <Button onClick={() => navigate("/")}>테스트하기</Button>
+        <h1>{t("result.error")}</h1>
+        <Button onClick={() => navigate("/")}>{t("result.startTest")}</Button>
       </div>
     );
   }
 
   const { country, reason, worstMatch, image, flag, id } = countryData;
-  console.log(image);
-  const worstMatchData = mbtiCountries[worstMatch];
+  const worstMatchData = countries[worstMatch];
 
   const handleShare = async () => {
     const shareData = {
-      title: "나에게 맞는 여행지",
-      text: `나에게 맞는 여행지는 ${country}입니다.\n이유: ${reason.trim()}`,
+      title: t("result.correctCountry"),
+      text: t("result.share.text", { country, reason }),
       url: `https://mbti.store/#/result/${id}`,
     };
 
     if (navigator.share) {
       try {
         await navigator.share(shareData);
-        alert("공유되었습니다!");
+        alert(t("result.share.success"));
       } catch (err) {
         console.log(err);
       }
     } else {
-      alert("공유 기능이 지원되지 않는 환경입니다.");
+      alert(t("result.share.error"));
     }
   };
 
@@ -66,7 +68,7 @@ const ResultPage: React.FC = () => {
         }}
       >
         <h1>
-          나에게 맞는 여행지: {country} {flag}
+          {t("result.correctCountry")}: {country} {flag}
         </h1>
         <img
           src={image}
@@ -79,14 +81,16 @@ const ResultPage: React.FC = () => {
         />
         <h2>{reason}</h2>
 
-        <h4>안 맞는 여행지: {worstMatchData.country}</h4>
+        <h4>
+          {t("result.wrongCountry")}: {worstMatchData.country}
+        </h4>
         <p>{worstMatchData.reason}</p>
 
         <Space size="middle">
           <Button type="primary" onClick={handleShare}>
-            공유하기
+            {t("result.startShare")}
           </Button>
-          <Button onClick={() => navigate("/")}>테스트하기</Button>
+          <Button onClick={() => navigate("/")}>{t("result.startTest")}</Button>
         </Space>
       </div>
     </>

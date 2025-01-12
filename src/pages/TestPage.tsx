@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAtom } from "jotai";
 import { answersAtom, currentQuestionAtom } from "../atoms/mbtiAtom";
-import { questions } from "../data/questions";
-import { mbtiCountries, MBTIType } from "../data/countries";
+import { getQuestions } from "../data/questions";
+import { getCountries, MBTIType } from "../data/countries";
 import { useNavigate } from "react-router-dom";
 import { shuffle } from "../utils";
 import { Button } from "antd";
+import i18n from "../i18n";
 
 const TestPage: React.FC = () => {
-  const [randomQuestions] = useState(() => shuffle(questions)); // 질문 섞기
+  const questions = getQuestions(i18n.language);
+  console.log("marvin", i18n.language, questions);
+  const [randomQuestions] = useState(() => shuffle(questions));
   const [currentQuestionIndex, setCurrentQuestionIndex] =
     useAtom(currentQuestionAtom);
   const [answers, setAnswers] = useAtom(answersAtom);
@@ -45,17 +48,14 @@ const TestPage: React.FC = () => {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       const mbti = calculateMBTI();
-      const country = mbtiCountries[mbti];
+      const countries = getCountries(i18n.language);
+      const country = countries[mbti];
       navigate(`/result/${country.id}`);
     }
   };
 
-  useEffect(() => {
-    console.log("Updated answers:", answers);
-  }, [answers]);
-
   const currentQuestion = randomQuestions[currentQuestionIndex];
-  const randomOptions = shuffle(currentQuestion.options); // 보기 순서를 섞기
+  const randomOptions = shuffle(currentQuestion.options);
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
