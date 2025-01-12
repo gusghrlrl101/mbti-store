@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import TestPage from "./pages/TestPage";
 import ResultPage from "./pages/ResultPage";
-import Footer from "./components/Footer";
+import MyFooter from "./components/Footer";
 import PrivacyPolicy from "./pages/PrivatePolicy";
 
 const App: React.FC = () => {
@@ -23,7 +23,7 @@ const App: React.FC = () => {
           <Route path="/result/:country" element={<ResultPage />} />
         </Routes>
       </main>
-      <Footer />
+      <MyFooter />
     </div>
   );
 };

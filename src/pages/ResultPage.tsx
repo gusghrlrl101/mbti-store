@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { mbtiCountries } from "../data/countries";
-import { Button, Space } from "antd";
-import Image from "../components/Image";
+import { Button, Space, Spin } from "antd";
 
 const ResultPage: React.FC = () => {
   const navigate = useNavigate();
   const { country: countryParam } = useParams<{ country: string }>();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // 해당 국가 정보 가져오기
   const countryData = Object.values(mbtiCountries).find(
@@ -46,23 +46,50 @@ const ResultPage: React.FC = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>
-        나에게 맞는 여행지: {country} {flag}
-      </h1>
-      <Image src={image} alt={`${country} image`} />
-      <h2>{reason}</h2>
+    <>
+      {!imageLoaded && (
+        <Spin
+          size="large"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "500px",
+          }}
+        />
+      )}
+      <div
+        style={{
+          textAlign: "center",
+          padding: "20px",
+          display: imageLoaded ? "block" : "none",
+        }}
+      >
+        <h1>
+          나에게 맞는 여행지: {country} {flag}
+        </h1>
+        <img
+          src={image}
+          alt={`${country} image`}
+          style={{
+            width: "100%",
+            maxWidth: "500px",
+          }}
+          onLoad={() => setImageLoaded(true)}
+        />
+        <h2>{reason}</h2>
 
-      <h4>안 맞는 여행지: {worstMatchData.country}</h4>
-      <p>{worstMatchData.reason}</p>
+        <h4>안 맞는 여행지: {worstMatchData.country}</h4>
+        <p>{worstMatchData.reason}</p>
 
-      <Space size="middle">
-        <Button type="primary" onClick={handleShare}>
-          공유하기
-        </Button>
-        <Button onClick={() => navigate("/")}>테스트하기</Button>
-      </Space>
-    </div>
+        <Space size="middle">
+          <Button type="primary" onClick={handleShare}>
+            공유하기
+          </Button>
+          <Button onClick={() => navigate("/")}>테스트하기</Button>
+        </Space>
+      </div>
+    </>
   );
 };
 
