@@ -20,7 +20,7 @@ const App: React.FC = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/test" element={<TestPage />} />
-          <Route path="/result" element={<ResultPage />} />
+          <Route path="/result/:country" element={<ResultPage />} />
         </Routes>
       </main>
       <Footer />

@@ -1,40 +1,36 @@
 import React from "react";
-import { useAtom } from "jotai";
-import { answersAtom } from "../atoms/mbtiAtom";
-import { mbtiCountries, MBTIType } from "../data/countries";
+import { useParams, useNavigate } from "react-router-dom";
+import { mbtiCountries } from "../data/countries";
+import { Button, Space } from "antd";
+import Image from "../components/Image";
 
 const ResultPage: React.FC = () => {
-  const [answers] = useAtom(answersAtom);
+  const navigate = useNavigate();
+  const { country: countryParam } = useParams<{ country: string }>();
 
-  const calculateMBTI = (): MBTIType => {
-    const counts: { [key: string]: number } = {
-      E: 0,
-      I: 0,
-      S: 0,
-      N: 0,
-      T: 0,
-      F: 0,
-      J: 0,
-      P: 0,
-    };
+  // 해당 국가 정보 가져오기
+  const countryData = Object.values(mbtiCountries).find(
+    (data) => data.id.toLowerCase() === countryParam?.toLowerCase()
+  );
 
-    answers.forEach((type) => {
-      if (counts[type] !== undefined) {
-        counts[type] += 1;
-      }
-    });
+  if (!countryData) {
+    return (
+      <div style={{ textAlign: "center", padding: "20px" }}>
+        <h1>잘못된 결과 페이지입니다.</h1>
+        <Button onClick={() => navigate("/")}>테스트하기</Button>
+      </div>
+    );
+  }
 
-    return ((counts.E > counts.I ? "E" : "I") +
-      (counts.S > counts.N ? "S" : "N") +
-      (counts.T > counts.F ? "T" : "F") +
-      (counts.J > counts.P ? "J" : "P")) as MBTIType;
-  };
+  const { country, reason, worstMatch, image, flag } = countryData;
+  console.log(image);
+  const worstMatchData = mbtiCountries[worstMatch];
 
   const handleShare = async () => {
     const shareData = {
       title: "나에게 맞는 여행지",
       text: `나에게 맞는 여행지는 ${country}입니다.\n이유: ${reason}`,
-      url: "https://mbti.store",
+      url: `https://mbti.store/result/${countryParam}`,
     };
 
     if (navigator.share) {
@@ -49,18 +45,23 @@ const ResultPage: React.FC = () => {
     }
   };
 
-  const result = calculateMBTI();
-  const { country, reason, worstMatch } = mbtiCountries[result];
-  const worstMatchData = mbtiCountries[worstMatch];
-
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>나에게 맞는 여행지: {country}</h1>
+      <h1>
+        나에게 맞는 여행지: {country} {flag}
+      </h1>
+      <Image src={image} alt={`${country} image`} />
       <h2>{reason}</h2>
+
       <h4>안 맞는 여행지: {worstMatchData.country}</h4>
       <p>{worstMatchData.reason}</p>
 
-      <button onClick={handleShare}>공유하기</button>
+      <Space size="middle">
+        <Button type="primary" onClick={handleShare}>
+          공유하기
+        </Button>
+        <Button onClick={() => navigate("/")}>테스트하기</Button>
+      </Space>
     </div>
   );
 };

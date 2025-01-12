@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Footer: React.FC = () => {
+const MyFooter: React.FC = () => {
   return (
     <footer
       style={{
@@ -24,4 +24,4 @@ const Footer: React.FC = () => {
   );
 };
 
-export default Footer;
+export default MyFooter;
