@@ -22,15 +22,15 @@ const ResultPage: React.FC = () => {
     );
   }
 
-  const { country, reason, worstMatch, image, flag } = countryData;
+  const { country, reason, worstMatch, image, flag, id } = countryData;
   console.log(image);
   const worstMatchData = mbtiCountries[worstMatch];
 
   const handleShare = async () => {
     const shareData = {
       title: "나에게 맞는 여행지",
-      text: `나에게 맞는 여행지는 ${country}입니다.\n이유: ${reason}`,
-      url: `https://mbti.store/result/${countryParam}`,
+      text: `나에게 맞는 여행지는 ${country}입니다.\n이유: ${reason.trim()}`,
+      url: `https://mbti.store/#/result/${id}`,
     };
 
     if (navigator.share) {
