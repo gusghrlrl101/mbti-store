@@ -4,7 +4,6 @@ import { Button, Space, Spin } from "antd";
 import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { answersAtom, currentQuestionAtom } from "../atoms/mbtiAtom";
-import i18n from "../i18n";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -17,16 +16,6 @@ const HomePage: React.FC = () => {
     setAnswers([]);
     setCurrentQuestionIndex(0);
   }, [setAnswers]);
-
-  // 타이틀 변경
-  useEffect(() => {
-    document.title = t("title");
-  }, [t]);
-
-  const languages = [
-    { code: "en", label: "🇺🇸 EN" },
-    { code: "kr", label: "🇰🇷 KR" },
-  ];
 
   return (
     <>
@@ -62,18 +51,6 @@ const HomePage: React.FC = () => {
           <Button type="primary" onClick={() => navigate("/test")}>
             {t("home.startTest")}
           </Button>
-          <Space>
-            {languages.map((lang) => (
-              <Button
-                key={lang.code}
-                color={i18n.language === lang.code ? "primary" : "default"}
-                onClick={() => i18n.changeLanguage(lang.code)}
-                variant="outlined"
-              >
-                {lang.label}
-              </Button>
-            ))}
-          </Space>
         </Space>
       </div>
     </>
