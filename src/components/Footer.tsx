@@ -1,13 +1,19 @@
 import { Select } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import i18n from "../i18n";
 
 const { Option } = Select;
 
 const MyFooter: React.FC = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+
+  const inVisibleRoutes = ["/test"];
+  const isInVisible = inVisibleRoutes.some((route) =>
+    new RegExp(`^${route.replace(/:\w+/g, "\\w+")}$`).test(location.pathname)
+  );
 
   const languages = [
     { code: "kr", label: "🇰🇷 한국어" }, // 한국어
@@ -30,17 +36,19 @@ const MyFooter: React.FC = () => {
         padding: "20px",
       }}
     >
-      <Select
-        defaultValue={i18n.language}
-        style={{ width: 150 }}
-        onChange={(value) => i18n.changeLanguage(value)}
-      >
-        {languages.map((lang) => (
-          <Option key={lang.code} value={lang.code}>
-            {lang.label}
-          </Option>
-        ))}
-      </Select>
+      {!isInVisible && (
+        <Select
+          defaultValue={i18n.language}
+          style={{ width: 150 }}
+          onChange={(value) => i18n.changeLanguage(value)}
+        >
+          {languages.map((lang) => (
+            <Option key={lang.code} value={lang.code}>
+              {lang.label}
+            </Option>
+          ))}
+        </Select>
+      )}
       <p style={{ margin: 0 }}>
         {t("footer.creator")}: <strong>gusghrlrl101@gmail.com</strong>
       </p>
